@@ -1,0 +1,7 @@
+title: "Complete Example"
+description: "This example demonstrates the configuration of an Amazon MemoryDB cluster using Terraform, including user management and DNS record setup."
+main_purpose: "The main purpose is to configure a MemoryDB cluster with user management and DNS records."
+key_features:
+  - "**Subnet Configuration**: Uses subnets from the database data source."
+  - "**User Management**: Configures an admin and a read-only user with specific access permissions."
+  - "**Dns Records**: Sets up DNS records for the MemoryDB cluster in a private zone."
