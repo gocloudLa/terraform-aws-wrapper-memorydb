@@ -73,6 +73,33 @@ elasticache_defaults = var.elasticache_defaults
 
 
 
+## 📑 Inputs
+| Name                            | Description                                                                                                                                                                       | Type     | Default | Required |
+| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------- | ------- | -------- |
+| `engine`                        | The engine that will run on your nodes. Supported values are redis and valkey                                                                                                     | `string` | `null`  | no       |
+| `engine\_version`               | Version number of the engine to be used for the cluster. Downgrades are not supported                                                                                             | `string` | `null`  | no       |
+| `auto\_minor\_version\_upgrade` | When set to `true`, the cluster will automatically receive minor engine version upgrades after launch. Defaults to `true`                                                         | `bool`   | `null`  | no       |
+| `node\_type`                    | The compute and memory capacity of the nodes in the cluster. See AWS documentation on supported node types as well as vertical scaling                                            | `string` | `null`  | no       |
+| `num\_shards`                   | The number of shards in the cluster. Defaults to `1`                                                                                                                              | `number` | `null`  | no       |
+| `num\_replicas\_per\_shard`     | The number of replicas to apply to each shard, up to a maximum of 5. Defaults to `1` (i.e. 2 nodes per shard)                                                                     | `number` | `null`  | no       |
+| `data\_tiering`                 | Must be set to `true` when using a data tiering node type                                                                                                                         | `bool`   | `null`  | no       |
+| `tls\_enabled`                  | A flag to enable in-transit encryption on the cluster. When set to `false`, the `acl_name` must be `open-access`. Defaults to `true`                                              | `bool`   | `null`  | no       |
+| `security\_group\_ids`          | Set of VPC Security Group ID-s to associate with this cluster                                                                                                                     | `list`   | `null`  | no       |
+| `snapshot\_arns`                | List of ARN-s that uniquely identify RDB snapshot files stored in S3. The snapshot files will be used to populate the new cluster                                                 | `list`   | `null`  | no       |
+| `maintenance\_window`           | Specifies the weekly time range during which maintenance on the cluster is performed. It is specified as a range in the format `ddd:hh24:mi-ddd:hh24:mi`                          | `string` | `null`  | no       |
+| `snapshot\_retention\_limit`    | The number of days for which MemoryDB retains automatic snapshots before deleting them. When set to `0`, automatic backups are disabled. Defaults to `0`                          | `number` | `null`  | no       |
+| `snapshot\_window`              | The daily time range (in UTC) during which MemoryDB begins taking a daily snapshot of your shard. Example: `05:00-09:00`                                                          | `string` | `null`  | no       |
+| `users`                         | A map of user definitions (maps) to be created                                                                                                                                    | `any`    | `{}`    | no       |
+| `acl\_name`                     | Name of ACL to be created if `create_acl` is `true`, otherwise it's the name of an existing ACL to use if `create_acl` is `false`                                                 | `string` | `null`  | no       |
+| `parameter\_group\_name`        | Name of parameter group to be created if `create_parameter_group` is `true`, otherwise it's the name of an existing parameter group to use if `create_parameter_group` is `false` | `string` | `null`  | no       |
+| `parameter\_group\_description` | Description for the parameter group. Defaults to `Managed by Terraform`                                                                                                           | `string` | `null`  | no       |
+| `parameter\_group\_family`      | The engine version that the parameter group can be used with                                                                                                                      | `string` | `null`  | no       |
+| `parameter\_group\_parameters`  | A list of parameter maps to apply                                                                                                                                                 | `null`   | `[]`    | no       |
+| `subnet\_group\_name`           | Name of subnet group to be created if `create_subnet_group` is `true`, otherwise it's the name of an existing subnet group to use if `create_subnet_group` is `false`             | `string` | `null`  | no       |
+| `subnet\_group\_description`    | Description for the subnet group. Defaults to `Managed by Terraform`                                                                                                              | `string` | `null`  | no       |
+| `subnet\_ids`                   | Set of VPC Subnet ID-s for the subnet group. At least one subnet must be provided                                                                                                 | `list`   | `[]`    | no       |
+| `tags`                          | A map of tags to use on all resources                                                                                                                                             | `map`    | `{}`    | no       |
+
 
 
 
