@@ -26,13 +26,13 @@ module "wrapper_memorydb" {
 
       users = {
         admin = {
-          # MODO DE CONEXION: redis-cli -h ${HOST} -p 6379 --tls --user dmc-prd-example-exusers-administrator --pass password_administrator_1234567890
+          # CONNECTION MODE: redis-cli -h ${HOST} -p 6379 --tls --user dmc-prd-example-exusers-administrator --pass password_administrator_1234567890
           user_name     = "dmc-prd-example-exusers-administrator"
           passwords     = ["password_administrator_1234567890"]
           access_string = "on ~* &* +@all"
         }
         readonly = {
-          # MODO DE CONEXION: redis-cli -h ${HOST} -p 6379 --tls --user dmc-prd-example-exusers-readonly --pass password_readonly_1234567890
+          # CONNECTION MODE: redis-cli -h ${HOST} -p 6379 --tls --user dmc-prd-example-exusers-readonly --pass password_readonly_1234567890
           user_name     = "dmc-prd-example-exusers-readonly"
           passwords     = ["password_readonly_1234567890"]
           access_string = "on ~* &* -@all +@read"
