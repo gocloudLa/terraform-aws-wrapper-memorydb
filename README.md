@@ -15,8 +15,8 @@ The Terraform Wrapper for MemoryDB simplifies the creation of Amazon's MemoryDB 
 ### 🔗 External Modules
 | Name | Version |
 |------|------:|
-| [terraform-aws-modules/memory-db/aws](https://github.com/terraform-aws-modules/memory-db-aws) | 2.3.0 |
-| [terraform-aws-modules/security-group/aws](https://github.com/terraform-aws-modules/security-group-aws) | 5.3.0 |
+| <a href="https://github.com/terraform-aws-modules/terraform-aws-memory-db" target="_blank">terraform-aws-modules/memory-db/aws</a> | 2.3.0 |
+| <a href="https://github.com/terraform-aws-modules/terraform-aws-security-group" target="_blank">terraform-aws-modules/security-group/aws</a> | 5.3.0 |
 
 
 
@@ -26,22 +26,9 @@ memorydb_parameters = {
   "ExSimple" = {
     subnets = data.aws_subnets.database.ids
 
-    # engine_version             = "7.1"
-    # auto_minor_version_upgrade = true
-    # node_type                  = "db.t4g.small"
-    # num_shards                 = 1
-    # num_replicas_per_shard     = 0
-    # data_tiering               = false
-    # tls_enabled                = true
-
-    # parameter_group_family      = "memorydb_redis7"
-    # parameter_group_parameters  = [
-    #   {
-    #     name  = "activedefrag"
-    #     value = "yes"
-    #   }
-    # ]
-
+    engine_version             = "7.1"
+    parameter_group_family      = "memorydb_redis7"
+    
     users = {
       admin = {
         # CONNECTION MODE: redis-cli -h ${HOST} -p 6379 --tls --user dmc-prd-example-exusers-administrator --pass password_administrator_1234567890
