@@ -2,7 +2,6 @@ module "wrapper_memorydb" {
   source = "../../"
 
   metadata = local.metadata
-  project  = "example"
 
   memorydb_parameters = {
     "ExSimple" = {
