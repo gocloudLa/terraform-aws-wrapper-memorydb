@@ -48,5 +48,5 @@ module "memorydb" {
   subnet_group_description = "MemoryDB subnet group for ${local.common_name}-${each.key}"
   subnet_ids               = try(each.value.subnets, null)
 
-  tags = local.common_tags
+  tags = merge(local.common_tags, try(each.value.tags, var.memorydb_defaults.tags, null))
 }
