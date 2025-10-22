@@ -36,6 +36,66 @@ locals {
         "alarm-level" = "CRIT"
       }
     }
+    "warning-DatabaseMemoryUsagePercentage" = {
+      # This alarm is used to detect the percentage of the memory available for the cluster that is in use.
+      description         = "is using more than 75% of memory"
+      threshold           = 75
+      unit                = "Percent"
+      metric_name         = "DatabaseMemoryUsagePercentage"
+      statistic           = "Average"
+      namespace           = "AWS/MemoryDB"
+      comparison_operator = "GreaterThanThreshold"
+      evaluation_periods  = 3
+      datapoints_to_alarm = 3
+      alarms_tags = {
+        "alarm-level" = "WARN"
+      }
+    }
+    "critical-DatabaseMemoryUsagePercentage" = {
+      # This alarm is used to detect the percentage of the memory available for the cluster that is in use.
+      description         = "is using more than 90% of memory"
+      threshold           = 90
+      unit                = "Percent"
+      metric_name         = "DatabaseMemoryUsagePercentage"
+      statistic           = "Average"
+      namespace           = "AWS/MemoryDB"
+      comparison_operator = "GreaterThanThreshold"
+      evaluation_periods  = 3
+      datapoints_to_alarm = 3
+      alarms_tags = {
+        "alarm-level" = "CRIT"
+      }
+    }
+    "warning-EngineCPUUtilization" = {
+      # This alarm is used to detect CPU utilization of the Valkey or Redis OSS engine thread.
+      description         = "is using more than 80% of memory"
+      threshold           = 80
+      unit                = "Percent"
+      metric_name         = "EngineCPUUtilization"
+      statistic           = "Average"
+      namespace           = "AWS/MemoryDB"
+      comparison_operator = "GreaterThanThreshold"
+      evaluation_periods  = 3
+      datapoints_to_alarm = 3
+      alarms_tags = {
+        "alarm-level" = "WARN"
+      }
+    }
+    "critical-EngineCPUUtilization" = {
+      # This alarm is used to detect CPU utilization of the Valkey or Redis OSS engine thread.
+      description         = "is using more than 90% of memory"
+      threshold           = 90
+      unit                = "Percent"
+      metric_name         = "EngineCPUUtilization"
+      statistic           = "Average"
+      namespace           = "AWS/MemoryDB"
+      comparison_operator = "GreaterThanThreshold"
+      evaluation_periods  = 3
+      datapoints_to_alarm = 3
+      alarms_tags = {
+        "alarm-level" = "CRIT"
+      }
+    }
   }
   alarms_default_tmp = merge([
     for memorydb_name, values in try(var.memorydb_parameters, []) : {
