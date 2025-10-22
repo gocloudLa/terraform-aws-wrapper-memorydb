@@ -46,8 +46,12 @@ module "wrapper_memorydb" {
       }
 
       # ALARMS CONFIGURATION
-      enable_alarms = true # Default: false
-      # alarms_disabled = ["critical-CPUUtilization" # if you need to disable an alarm
+      # enable_alarms = true # Default: false
+      # alarms_disabled = [ # if you need to disable an alarm
+      #   "critical-CPUUtilization", 
+      #   "critical-DatabaseMemoryUsagePercentage", 
+      #   "critical-EngineCPUUtilization"
+      # ] 
       # alarms_overrides = {
       #   "warning-CPUUtilization" = {
       #     "actions_enabled"     = true
@@ -60,70 +64,70 @@ module "wrapper_memorydb" {
       # }
 
       alarms_custom = {
-        "warning-FreeableMemory" = {
-          # This alarm helps to monitor low freeable memory which can mean that there is a spike in database connections or that your instance may be under high memory pressure.
-          description         = "FreeableMemory below 350 MB"
-          threshold           = 367001600
-          unit                = "Bytes"
-          metric_name         = "FreeableMemory"
-          statistic           = "Average"
-          namespace           = "AWS/MemoryDB"
-          period              = 60
-          evaluation_periods  = 15
-          datapoints_to_alarm = 15
-          comparison_operator = "LessThanThreshold"
-          alarms_tags = {
-            "alarm-level" = "WARN"
-          }
-        }
-        "critical-FreeableMemory" = {
-          description = "FreeableMemory below 250 MB"
-          # This alarm helps to monitor low freeable memory which can mean that there is a spike in database connections or that your instance may be under high memory pressure.
-          threshold           = 262144000
-          unit                = "Bytes"
-          metric_name         = "FreeableMemory"
-          statistic           = "Average"
-          namespace           = "AWS/MemoryDB"
-          period              = 60
-          evaluation_periods  = 15
-          datapoints_to_alarm = 15
-          comparison_operator = "LessThanThreshold"
-          alarms_tags = {
-            "alarm-level" = "CRIT"
-          }
-        }
-        "warning-CurrConnections" = {
-          # This alarm is used to detect the number of client connections, excluding connections from read replicas.
-          description         = "is less than 20% of EBSIO"
-          threshold           = 350
-          unit                = "Count"
-          metric_name         = "CurrConnections"
-          statistic           = "Average"
-          namespace           = "AWS/MemoryDB"
-          period              = 60
-          evaluation_periods  = 3
-          datapoints_to_alarm = 3
-          comparison_operator = "GreaterThanThreshold"
-          alarms_tags = {
-            "alarm-level" = "WARN"
-          }
-        }
-        "critical-CurrConnections" = {
-          # This alarm is used to detect the number of client connections, excluding connections from read replicas.
-          description         = "is less than 10% of EBSIO"
-          threshold           = 500
-          unit                = "Count"
-          metric_name         = "CurrConnections"
-          statistic           = "Average"
-          namespace           = "AWS/MemoryDB"
-          period              = 60
-          evaluation_periods  = 3
-          datapoints_to_alarm = 3
-          comparison_operator = "GreaterThanThreshold"
-          alarms_tags = {
-            "alarm-level" = "CRIT"
-          }
-        }
+        # "warning-FreeableMemory" = {
+        #   # This alarm helps to monitor low freeable memory which can mean that there is a spike in database connections or that your instance may be under high memory pressure.
+        #   description         = "FreeableMemory below 350 MB"
+        #   threshold           = 367001600
+        #   unit                = "Bytes"
+        #   metric_name         = "FreeableMemory"
+        #   statistic           = "Average"
+        #   namespace           = "AWS/MemoryDB"
+        #   period              = 60
+        #   evaluation_periods  = 15
+        #   datapoints_to_alarm = 15
+        #   comparison_operator = "LessThanThreshold"
+        #   alarms_tags = {
+        #     "alarm-level" = "WARN"
+        #   }
+        # }
+        # "critical-FreeableMemory" = {
+        #   description = "FreeableMemory below 250 MB"
+        #   # This alarm helps to monitor low freeable memory which can mean that there is a spike in database connections or that your instance may be under high memory pressure.
+        #   threshold           = 262144000
+        #   unit                = "Bytes"
+        #   metric_name         = "FreeableMemory"
+        #   statistic           = "Average"
+        #   namespace           = "AWS/MemoryDB"
+        #   period              = 60
+        #   evaluation_periods  = 15
+        #   datapoints_to_alarm = 15
+        #   comparison_operator = "LessThanThreshold"
+        #   alarms_tags = {
+        #     "alarm-level" = "CRIT"
+        #   }
+        # }
+        # "warning-CurrConnections" = {
+        #   # This alarm is used to detect the number of client connections, excluding connections from read replicas.
+        #   description         = "is less than 20% of EBSIO"
+        #   threshold           = 350
+        #   unit                = "Count"
+        #   metric_name         = "CurrConnections"
+        #   statistic           = "Average"
+        #   namespace           = "AWS/MemoryDB"
+        #   period              = 60
+        #   evaluation_periods  = 3
+        #   datapoints_to_alarm = 3
+        #   comparison_operator = "GreaterThanThreshold"
+        #   alarms_tags = {
+        #     "alarm-level" = "WARN"
+        #   }
+        # }
+        # "critical-CurrConnections" = {
+        #   # This alarm is used to detect the number of client connections, excluding connections from read replicas.
+        #   description         = "is less than 10% of EBSIO"
+        #   threshold           = 500
+        #   unit                = "Count"
+        #   metric_name         = "CurrConnections"
+        #   statistic           = "Average"
+        #   namespace           = "AWS/MemoryDB"
+        #   period              = 60
+        #   evaluation_periods  = 3
+        #   datapoints_to_alarm = 3
+        #   comparison_operator = "GreaterThanThreshold"
+        #   alarms_tags = {
+        #     "alarm-level" = "CRIT"
+        #   }
+        # }
       }
     }
   }
