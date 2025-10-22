@@ -58,7 +58,7 @@ locals {
           period              = try(values.alarms_overrides[alarm].period, value.period, 60)
           treat_missing_data  = try(values.alarms_overrides[alarm].treat_missing_data, "notBreaching")
           dimensions = try(value.dimensions, {
-            ClusterName = "${local.common_name}-${memorydb_name}"
+            ClusterName = lower("${local.common_name}-${memorydb_name}")
           })
           ok_actions    = try(values.alarms_overrides[alarm].ok_actions, value.ok_actions, [])
           alarm_actions = try(values.alarms_overrides[alarm].alarm_actions, value.alarm_actions, [])
@@ -87,7 +87,7 @@ locals {
           period              = value.period
           treat_missing_data  = try("${value.treat_missing_data}", "notBreaching")
           dimensions = try(value.dimensions, {
-            ClusterName = "${local.common_name}-${memorydb_name}"
+            ClusterName = lower("${local.common_name}-${memorydb_name}")
           })
           ok_actions    = try(value.ok_actions, [])
           alarm_actions = try(value.alarm_actions, [])

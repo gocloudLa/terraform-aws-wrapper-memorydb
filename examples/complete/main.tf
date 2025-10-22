@@ -67,7 +67,7 @@ module "wrapper_memorydb" {
       #     unit                = "Bytes"
       #     metric_name         = "FreeableMemory"
       #     statistic           = "Average"
-      #     namespace           = "AWS/RDS"
+      #     namespace           = "AWS/MemoryDB"
       #     period              = 60
       #     evaluation_periods  = 15
       #     datapoints_to_alarm = 15
@@ -83,7 +83,7 @@ module "wrapper_memorydb" {
       #     unit                = "Bytes"
       #     metric_name         = "FreeableMemory"
       #     statistic           = "Average"
-      #     namespace           = "AWS/RDS"
+      #     namespace           = "AWS/MemoryDB"
       #     period              = 60
       #     evaluation_periods  = 15
       #     datapoints_to_alarm = 15
@@ -103,7 +103,7 @@ module "wrapper_memorydb" {
       #     period              = 60
       #     evaluation_periods  = 3
       #     datapoints_to_alarm = 3
-      #     comparison_operator = "LessThanThreshold"
+      #     comparison_operator = "GreaterThanThreshold"
       #     alarms_tags = {
       #       "alarm-level" = "WARN"
       #     }
@@ -119,7 +119,7 @@ module "wrapper_memorydb" {
       #     period              = 60
       #     evaluation_periods  = 3
       #     datapoints_to_alarm = 3
-      #     comparison_operator = "LessThanThreshold"
+      #     comparison_operator = "GreaterThanThreshold"
       #     alarms_tags = {
       #       "alarm-level" = "CRIT"
       #     }
