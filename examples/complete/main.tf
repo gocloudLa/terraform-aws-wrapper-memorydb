@@ -96,6 +96,38 @@ module "wrapper_memorydb" {
         #     "alarm-level" = "CRIT"
         #   }
         # }
+        # "warning-SwapUsage" = {
+        #   # This alarm helps to monitor the amount of swap used on the host.
+        #   description         = "SwapUsage below 300 MB"
+        #   threshold           = 300000000
+        #   unit                = "Bytes"
+        #   metric_name         = "SwapUsage"
+        #   statistic           = "Average"
+        #   namespace           = "AWS/MemoryDB"
+        #   period              = 60
+        #   evaluation_periods  = 15
+        #   datapoints_to_alarm = 15
+        #   comparison_operator = "LessThanThreshold"
+        #   alarms_tags = {
+        #     "alarm-level" = "WARN"
+        #   }
+        # }
+        # "critical-SwapUsage" = {
+        #   description = "SwapUsage below 250 MB"
+        #   # This alarm helps to monitor the amount of swap used on the host.
+        #   threshold           = 200000000
+        #   unit                = "Bytes"
+        #   metric_name         = "SwapUsage"
+        #   statistic           = "Average"
+        #   namespace           = "AWS/MemoryDB"
+        #   period              = 60
+        #   evaluation_periods  = 15
+        #   datapoints_to_alarm = 15
+        #   comparison_operator = "LessThanThreshold"
+        #   alarms_tags = {
+        #     "alarm-level" = "CRIT"
+        #   }
+        # }        
         # "warning-CurrConnections" = {
         #   # This alarm is used to detect the number of client connections, excluding connections from read replicas.
         #   description         = "is less than 20% of EBSIO"
