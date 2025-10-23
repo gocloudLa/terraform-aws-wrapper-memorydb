@@ -71,7 +71,6 @@ module "wrapper_memorydb" {
         #   unit                = "Bytes"
         #   metric_name         = "FreeableMemory"
         #   statistic           = "Average"
-        #   namespace           = "AWS/MemoryDB"
         #   period              = 60
         #   evaluation_periods  = 15
         #   datapoints_to_alarm = 15
@@ -87,7 +86,6 @@ module "wrapper_memorydb" {
         #   unit                = "Bytes"
         #   metric_name         = "FreeableMemory"
         #   statistic           = "Average"
-        #   namespace           = "AWS/MemoryDB"
         #   period              = 60
         #   evaluation_periods  = 15
         #   datapoints_to_alarm = 15
@@ -103,11 +101,10 @@ module "wrapper_memorydb" {
         #   unit                = "Bytes"
         #   metric_name         = "SwapUsage"
         #   statistic           = "Average"
-        #   namespace           = "AWS/MemoryDB"
         #   period              = 60
         #   evaluation_periods  = 15
         #   datapoints_to_alarm = 15
-        #   comparison_operator = "LessThanThreshold"
+        #   comparison_operator = "GreaterThanThreshold"
         #   alarms_tags = {
         #     "alarm-level" = "WARN"
         #   }
@@ -119,23 +116,21 @@ module "wrapper_memorydb" {
         #   unit                = "Bytes"
         #   metric_name         = "SwapUsage"
         #   statistic           = "Average"
-        #   namespace           = "AWS/MemoryDB"
         #   period              = 60
         #   evaluation_periods  = 15
         #   datapoints_to_alarm = 15
-        #   comparison_operator = "LessThanThreshold"
+        #   comparison_operator = "GreaterThanThreshold"
         #   alarms_tags = {
         #     "alarm-level" = "CRIT"
         #   }
         # }        
         # "warning-CurrConnections" = {
         #   # This alarm is used to detect the number of client connections, excluding connections from read replicas.
-        #   description         = "is less than 20% of EBSIO"
+        #   description         = "Triggers if the number of client connections is above the threshold of 350 connections"
         #   threshold           = 350
         #   unit                = "Count"
         #   metric_name         = "CurrConnections"
         #   statistic           = "Average"
-        #   namespace           = "AWS/MemoryDB"
         #   period              = 60
         #   evaluation_periods  = 3
         #   datapoints_to_alarm = 3
@@ -146,12 +141,11 @@ module "wrapper_memorydb" {
         # }
         # "critical-CurrConnections" = {
         #   # This alarm is used to detect the number of client connections, excluding connections from read replicas.
-        #   description         = "is less than 10% of EBSIO"
+        #   description         = "Triggers if the number of client connections is above the threshold of 500 connections"
         #   threshold           = 500
         #   unit                = "Count"
         #   metric_name         = "CurrConnections"
         #   statistic           = "Average"
-        #   namespace           = "AWS/MemoryDB"
         #   period              = 60
         #   evaluation_periods  = 3
         #   datapoints_to_alarm = 3
