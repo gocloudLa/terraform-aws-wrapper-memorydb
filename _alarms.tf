@@ -68,8 +68,8 @@ locals {
     }
     "warning-EngineCPUUtilization" = {
       # This alarm is used to detect CPU utilization of the Valkey or Redis OSS engine thread.
-      description         = "is using more than 80% of memory"
-      threshold           = 80
+      description         = "is using more than 85% of memory"
+      threshold           = 85
       unit                = "Percent"
       metric_name         = "EngineCPUUtilization"
       statistic           = "Average"
