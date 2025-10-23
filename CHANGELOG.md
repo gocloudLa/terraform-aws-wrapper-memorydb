@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/compare/v1.0.1...v1.1.0) (2025-10-23)
+
+
+### Features
+
+* **module:** add alarms for monitoring ([#5](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/issues/5)) ([ae48c05](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/commit/ae48c05d7ac268d9fede7190d3cbf79179cea53b))
+
 ## [1.0.1](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/compare/v1.0.0...v1.0.1) (2025-10-11)
 
 
