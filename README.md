@@ -18,7 +18,7 @@ The Terraform Wrapper for MemoryDB simplifies the creation of Amazon's MemoryDB 
 | Name | Version |
 |------|------:|
 | <a href="https://github.com/terraform-aws-modules/terraform-aws-memory-db" target="_blank">terraform-aws-modules/memory-db/aws</a> | 2.3.0 |
-| <a href="https://github.com/terraform-aws-modules/terraform-aws-security-group" target="_blank">terraform-aws-modules/security-group/aws</a> | 5.3.0 |
+| <a href="https://github.com/terraform-aws-modules/terraform-aws-security-group" target="_blank">terraform-aws-modules/security-group/aws</a> | 5.3.1 |
 
 
 

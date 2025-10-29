@@ -2,7 +2,7 @@ module "security_group" {
   for_each = var.memorydb_parameters
 
   source  = "terraform-aws-modules/security-group/aws"
-  version = "5.3.0"
+  version = "5.3.1"
 
   name            = "${local.common_name}-memorydb-${each.key}"
   vpc_id          = data.aws_vpc.this[each.key].id
