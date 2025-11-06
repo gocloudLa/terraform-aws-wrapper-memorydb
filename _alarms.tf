@@ -118,7 +118,7 @@ locals {
           ok_actions    = try(values.alarms_overrides[alarm].ok_actions, var.memorydb_defaults.alarms_defaults.ok_actions, [])
           alarm_actions = try(values.alarms_overrides[alarm].alarm_actions, var.memorydb_defaults.alarms_defaults.alarm_actions, [])
           alarms_tags   = merge(try(values.alarms_overrides[alarm].alarms_tags, value.alarms_tags), { "alarm-memorydb-name" = "${local.common_name}-${memorydb_name}" })
-      }) if can(var.memorydb_parameters) && var.memorydb_parameters != {} && try(values.enable_alarms, false) && !contains(try(values.alarms_disabled, []), alarm)
+      }) if can(var.memorydb_parameters) && var.memorydb_parameters != {} && try(values.enable_alarms, var.memorydb_defaults.enable_alarms, false) && !contains(try(values.alarms_disabled, var.memorydb_defaults.alarms_defaults.alarms_disabled, []), alarm)
     }
   ]...)
 
@@ -149,7 +149,7 @@ locals {
           alarm_actions = try(value.alarm_actions, var.memorydb_defaults.alarms_defaults.alarm_actions, [])
           alarms_tags   = merge(try(values.alarms_overrides[alarm].alarms_tags, value.alarms_tags), { "alarm-memorydb-name" = "${local.common_name}-${memorydb_name}" })
         }
-      ) if can(var.memorydb_parameters) && var.memorydb_parameters != {} && try(values.enable_alarms, false)
+      ) if can(var.memorydb_parameters) && var.memorydb_parameters != {} && try(values.enable_alarms, var.memorydb_defaults.enable_alarms, false)
     }
   ]...)
 
@@ -180,7 +180,7 @@ locals {
           } if startswith(alarm_name, "${memorydb_name}-")
         ]
       ]
-    ] if can(var.memorydb_parameters) && var.memorydb_parameters != {} && try(memorydb_config.enable_alarms, false)
+    ] if can(var.memorydb_parameters) && var.memorydb_parameters != {} && try(memorydb_config.enable_alarms, var.memorydb_defaults.enable_alarms, false)
   ])...)
 
 }
