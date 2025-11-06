@@ -112,9 +112,6 @@ locals {
           comparison_operator = try(values.alarms_overrides[alarm].comparison_operator, value.comparison_operator)
           period              = try(values.alarms_overrides[alarm].period, value.period, 60)
           treat_missing_data  = try(values.alarms_overrides[alarm].treat_missing_data, "notBreaching")
-          dimensions = {
-            ClusterName = lower("${local.common_name}-${memorydb_name}")
-          }
           ok_actions    = try(values.alarms_overrides[alarm].ok_actions, var.memorydb_defaults.alarms_defaults.ok_actions, [])
           alarm_actions = try(values.alarms_overrides[alarm].alarm_actions, var.memorydb_defaults.alarms_defaults.alarm_actions, [])
           alarms_tags   = merge(try(values.alarms_overrides[alarm].alarms_tags, value.alarms_tags), { "alarm-memorydb-name" = "${local.common_name}-${memorydb_name}" })
