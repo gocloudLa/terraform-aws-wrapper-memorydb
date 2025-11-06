@@ -13,7 +13,6 @@ locals {
       unit                = "Percent"
       metric_name         = "CPUUtilization"
       statistic           = "Average"
-      namespace           = "AWS/MemoryDB"
       comparison_operator = "GreaterThanThreshold"
       evaluation_periods  = 5
       datapoints_to_alarm = 5
@@ -28,7 +27,6 @@ locals {
       unit                = "Percent"
       metric_name         = "CPUUtilization"
       statistic           = "Average"
-      namespace           = "AWS/MemoryDB"
       comparison_operator = "GreaterThanThreshold"
       evaluation_periods  = 5
       datapoints_to_alarm = 5
@@ -43,7 +41,6 @@ locals {
       unit                = "Percent"
       metric_name         = "DatabaseMemoryUsagePercentage"
       statistic           = "Average"
-      namespace           = "AWS/MemoryDB"
       comparison_operator = "GreaterThanThreshold"
       evaluation_periods  = 3
       datapoints_to_alarm = 3
@@ -58,7 +55,6 @@ locals {
       unit                = "Percent"
       metric_name         = "DatabaseMemoryUsagePercentage"
       statistic           = "Average"
-      namespace           = "AWS/MemoryDB"
       comparison_operator = "GreaterThanThreshold"
       evaluation_periods  = 3
       datapoints_to_alarm = 3
@@ -68,12 +64,11 @@ locals {
     }
     "warning-EngineCPUUtilization" = {
       # This alarm is used to detect CPU utilization of the Valkey or Redis OSS engine thread.
-      description         = "is using more than 80% of memory"
-      threshold           = 80
+      description         = "is using more than 85% of memory"
+      threshold           = 85
       unit                = "Percent"
       metric_name         = "EngineCPUUtilization"
       statistic           = "Average"
-      namespace           = "AWS/MemoryDB"
       comparison_operator = "GreaterThanThreshold"
       evaluation_periods  = 3
       datapoints_to_alarm = 3
@@ -88,7 +83,6 @@ locals {
       unit                = "Percent"
       metric_name         = "EngineCPUUtilization"
       statistic           = "Average"
-      namespace           = "AWS/MemoryDB"
       comparison_operator = "GreaterThanThreshold"
       evaluation_periods  = 3
       datapoints_to_alarm = 3
@@ -104,12 +98,13 @@ locals {
       merge(
         value,
         {
-          alarm_name          = "${split("/", value.namespace)[1]}-${alarm}-${local.common_name}-${memorydb_name}"
+          alarm_name          = "MemoryDB-${alarm}-${local.common_name}-${memorydb_name}"
           alarm_description   = "MemoryDB[${memorydb_name}] ${value.description}"
           actions_enabled     = try(values.alarms_overrides[alarm].actions_enabled, true)
           threshold           = try(values.alarms_overrides[alarm].threshold, value.threshold)
           unit                = try(values.alarms_overrides[alarm].unit, value.unit)
           metric_name         = try(values.alarms_overrides[alarm].metric_name, value.metric_name)
+          namespace           = try(values.alarms_overrides[alarm].namespace, value.namespace, "AWS/MemoryDB")
           evaluation_periods  = try(values.alarms_overrides[alarm].evaluation_periods, value.evaluation_periods, null)
           datapoints_to_alarm = try(values.alarms_overrides[alarm].datapoints_to_alarm, value.datapoints_to_alarm, null)
           statistic           = try(values.alarms_overrides[alarm].statistic, value.statistic, null)
@@ -117,13 +112,10 @@ locals {
           comparison_operator = try(values.alarms_overrides[alarm].comparison_operator, value.comparison_operator)
           period              = try(values.alarms_overrides[alarm].period, value.period, 60)
           treat_missing_data  = try(values.alarms_overrides[alarm].treat_missing_data, "notBreaching")
-          dimensions = try(value.dimensions, {
-            ClusterName = lower("${local.common_name}-${memorydb_name}")
-          })
-          ok_actions    = try(values.alarms_overrides[alarm].ok_actions, value.ok_actions, [])
-          alarm_actions = try(values.alarms_overrides[alarm].alarm_actions, value.alarm_actions, [])
-          alarms_tags   = merge(try(values.alarms_overrides[alarm].alarms_tags, value.alarms_tags), { "alarm-memorydb-name" = "${local.common_name}-${memorydb_name}" })
-      }) if can(var.memorydb_parameters) && var.memorydb_parameters != {} && try(values.enable_alarms, false) && !contains(try(values.alarms_disabled, []), alarm)
+          ok_actions          = try(values.alarms_overrides[alarm].ok_actions, var.memorydb_defaults.alarms_defaults.ok_actions, [])
+          alarm_actions       = try(values.alarms_overrides[alarm].alarm_actions, var.memorydb_defaults.alarms_defaults.alarm_actions, [])
+          alarms_tags         = merge(try(values.alarms_overrides[alarm].alarms_tags, value.alarms_tags), { "alarm-memorydb-name" = "${local.common_name}-${memorydb_name}" })
+      }) if can(var.memorydb_parameters) && var.memorydb_parameters != {} && try(values.enable_alarms, var.memorydb_defaults.enable_alarms, false) && !contains(try(values.alarms_disabled, var.memorydb_defaults.alarms_defaults.alarms_disabled, []), alarm)
     }
   ]...)
 
@@ -133,12 +125,13 @@ locals {
       "${memorydb_name}-${alarm}" => merge(
         value,
         {
-          alarm_name          = "${split("/", value.namespace)[1]}-${alarm}-${local.common_name}-${memorydb_name}"
+          alarm_name          = "MemoryDB-${alarm}-${local.common_name}-${memorydb_name}"
           alarm_description   = "MemoryDB[${memorydb_name}] ${value.description}"
           actions_enabled     = try(value.actions_enabled, true)
           threshold           = value.threshold
           unit                = value.unit
           metric_name         = value.metric_name
+          namespace           = try(value.namespace, "AWS/MemoryDB")
           evaluation_periods  = try(value.evaluation_periods, null)
           datapoints_to_alarm = try(value.datapoints_to_alarm, null)
           statistic           = try(value.statistic, null)
@@ -149,11 +142,11 @@ locals {
           dimensions = try(value.dimensions, {
             ClusterName = lower("${local.common_name}-${memorydb_name}")
           })
-          ok_actions    = try(value.ok_actions, [])
-          alarm_actions = try(value.alarm_actions, [])
+          ok_actions    = try(value.ok_actions, var.memorydb_defaults.alarms_defaults.ok_actions, [])
+          alarm_actions = try(value.alarm_actions, var.memorydb_defaults.alarms_defaults.alarm_actions, [])
           alarms_tags   = merge(try(values.alarms_overrides[alarm].alarms_tags, value.alarms_tags), { "alarm-memorydb-name" = "${local.common_name}-${memorydb_name}" })
         }
-      ) if can(var.memorydb_parameters) && var.memorydb_parameters != {} && try(values.enable_alarms, false)
+      ) if can(var.memorydb_parameters) && var.memorydb_parameters != {} && try(values.enable_alarms, var.memorydb_defaults.enable_alarms, false)
     }
   ]...)
 
@@ -162,6 +155,30 @@ locals {
     local.alarms_custom_tmp
   )
 
+  # Shard-level alarms - creates a flat map for for_each
+  alarms_for_shard = merge(flatten([
+    for memorydb_name, memorydb_config in var.memorydb_parameters : [
+      # Iterate through each shard group (num_shards) and for each shard group iterate through its replicas (num_replicas_per_shard)
+      # This creates alarms for each individual node in the shard
+      for shards_group_idx in range(try(memorydb_config.num_shards, 1)) : [
+        for replica_idx in range(try(memorydb_config.num_replicas_per_shard, 0) + 1) : [
+          for alarm_name, alarm in local.alarms : {
+            "${memorydb_name}-${shards_group_idx}-${replica_idx}-${alarm_name}" = merge(
+              alarm,
+              {
+                alarm_name        = "${split("/", alarm.namespace)[1]}-${alarm.alarm_name}-${tolist(tolist(module.memorydb[memorydb_name].cluster_shards)[shards_group_idx].nodes)[replica_idx].name}"
+                alarm_description = "MemoryDB[${tolist(tolist(module.memorydb[memorydb_name].cluster_shards)[shards_group_idx].nodes)[replica_idx].name}] ${alarm.description}"
+                dimensions = {
+                  ClusterName = lower("${local.common_name}-${memorydb_name}")
+                  NodeName    = tolist(tolist(module.memorydb[memorydb_name].cluster_shards)[shards_group_idx].nodes)[replica_idx].name
+                }
+              }
+            )
+          } if startswith(alarm_name, "${memorydb_name}-")
+        ]
+      ]
+    ] if can(var.memorydb_parameters) && var.memorydb_parameters != {} && try(memorydb_config.enable_alarms, var.memorydb_defaults.enable_alarms, false)
+  ])...)
 
 }
 
@@ -186,7 +203,7 @@ data "aws_sns_topic" "alarms_sns_topic_name" {
 /*----------------------------------------------------------------------*/
 
 resource "aws_cloudwatch_metric_alarm" "alarms" {
-  for_each = nonsensitive(local.alarms)
+  for_each = nonsensitive(local.alarms_for_shard)
 
   alarm_name          = each.value.alarm_name
   alarm_description   = each.value.alarm_description

@@ -3,6 +3,32 @@ module "wrapper_memorydb" {
 
   metadata = local.metadata
 
+  /*----------------------------------------------------------------------*/
+  /* MemoryDB Defaults                                                    */
+  /*----------------------------------------------------------------------*/
+
+  # memorydb_defaults = {
+  #
+  #   # Enable alarms for all services
+  #   enable_alarms = true # Default: false
+  #
+  #   # Note: If a value is specified at the service level, that value will be used and the default will not be applied.
+  #   alarms_defaults = {
+  #     # Default OK and Alarm actions ARNs for alarm notifications
+  #     #alarm_actions = ["arn:aws:sns:us-east-1:123456789012:example-alerts"]
+  #     #ok_actions    = ["arn:aws:sns:us-east-1:123456789012:example-alerts"]
+  #
+  #     # Disable specific CloudWatch alarms by default for all services.
+  #     #alarms_disabled = ["critical-CPUUtilization", "critical-MemoryUtilization"]
+  #    }
+  #
+  # }
+
+  /*----------------------------------------------------------------------*/
+  /* MemoryDB Parameters                                                  */
+  /*----------------------------------------------------------------------*/
+
+
   memorydb_parameters = {
     "ExSimple" = {
       subnets = data.aws_subnets.database.ids
@@ -44,14 +70,39 @@ module "wrapper_memorydb" {
           private_zone = true
         }
       }
+    }
+
+    "ExMulti" = {
+      subnets = data.aws_subnets.database.ids
+
+      num_shards             = 2
+      num_replicas_per_shard = 1
+
+      dns_records = {
+        "" = {
+          zone_name    = local.zone_private
+          private_zone = true
+        }
+      }
+    }
+
+    "ExAlarms" = {
+      subnets = data.aws_subnets.database.ids
+
+      dns_records = {
+        "" = {
+          zone_name    = local.zone_private
+          private_zone = true
+        }
+      }
 
       # ALARMS CONFIGURATION
-      # enable_alarms = true # Default: false
-      # alarms_disabled = [ # if you need to disable an alarm
-      #   "critical-CPUUtilization", 
-      #   "critical-DatabaseMemoryUsagePercentage", 
-      #   "critical-EngineCPUUtilization"
-      # ] 
+      enable_alarms = true # Default: false
+      alarms_disabled = [  # if you need to disable an alarm
+        "critical-CPUUtilization",
+        "critical-DatabaseMemoryUsagePercentage",
+        "critical-EngineCPUUtilization"
+      ]
       # alarms_overrides = {
       #   "warning-CPUUtilization" = {
       #     "actions_enabled"     = true
@@ -71,7 +122,6 @@ module "wrapper_memorydb" {
         #   unit                = "Bytes"
         #   metric_name         = "FreeableMemory"
         #   statistic           = "Average"
-        #   namespace           = "AWS/MemoryDB"
         #   period              = 60
         #   evaluation_periods  = 15
         #   datapoints_to_alarm = 15
@@ -87,7 +137,6 @@ module "wrapper_memorydb" {
         #   unit                = "Bytes"
         #   metric_name         = "FreeableMemory"
         #   statistic           = "Average"
-        #   namespace           = "AWS/MemoryDB"
         #   period              = 60
         #   evaluation_periods  = 15
         #   datapoints_to_alarm = 15
@@ -103,11 +152,10 @@ module "wrapper_memorydb" {
         #   unit                = "Bytes"
         #   metric_name         = "SwapUsage"
         #   statistic           = "Average"
-        #   namespace           = "AWS/MemoryDB"
         #   period              = 60
         #   evaluation_periods  = 15
         #   datapoints_to_alarm = 15
-        #   comparison_operator = "LessThanThreshold"
+        #   comparison_operator = "GreaterThanThreshold"
         #   alarms_tags = {
         #     "alarm-level" = "WARN"
         #   }
@@ -119,23 +167,21 @@ module "wrapper_memorydb" {
         #   unit                = "Bytes"
         #   metric_name         = "SwapUsage"
         #   statistic           = "Average"
-        #   namespace           = "AWS/MemoryDB"
         #   period              = 60
         #   evaluation_periods  = 15
         #   datapoints_to_alarm = 15
-        #   comparison_operator = "LessThanThreshold"
+        #   comparison_operator = "GreaterThanThreshold"
         #   alarms_tags = {
         #     "alarm-level" = "CRIT"
         #   }
         # }        
         # "warning-CurrConnections" = {
         #   # This alarm is used to detect the number of client connections, excluding connections from read replicas.
-        #   description         = "is less than 20% of EBSIO"
+        #   description         = "Triggers if the number of client connections is above the threshold of 350 connections"
         #   threshold           = 350
         #   unit                = "Count"
         #   metric_name         = "CurrConnections"
         #   statistic           = "Average"
-        #   namespace           = "AWS/MemoryDB"
         #   period              = 60
         #   evaluation_periods  = 3
         #   datapoints_to_alarm = 3
@@ -146,12 +192,11 @@ module "wrapper_memorydb" {
         # }
         # "critical-CurrConnections" = {
         #   # This alarm is used to detect the number of client connections, excluding connections from read replicas.
-        #   description         = "is less than 10% of EBSIO"
+        #   description         = "Triggers if the number of client connections is above the threshold of 500 connections"
         #   threshold           = 500
         #   unit                = "Count"
         #   metric_name         = "CurrConnections"
         #   statistic           = "Average"
-        #   namespace           = "AWS/MemoryDB"
         #   period              = 60
         #   evaluation_periods  = 3
         #   datapoints_to_alarm = 3
