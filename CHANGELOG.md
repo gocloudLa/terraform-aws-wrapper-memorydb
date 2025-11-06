@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.0](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/compare/v1.1.0...v1.2.0) (2025-11-06)
+
+
+### Features
+
+* **example:** add alarms for replicas & defaults alarms values ([#7](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/issues/7)) ([0866b2e](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/commit/0866b2ebbee80bfd4ef02ff2c91dca8f10dd35f6))
+
+
+### Bug Fixes
+
+* **deps:** bump terraform-aws-modules/security-group/aws from 5.3.0 to 5.3.1 in the all-terraform-dependencies group across 1 directory ([#8](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/issues/8)) ([0c625c2](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/commit/0c625c247174e58a790adb86e7bd5afb905898ea))
+
 ## [1.1.0](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/compare/v1.0.1...v1.1.0) (2025-10-23)
 
 
