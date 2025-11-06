@@ -115,8 +115,8 @@ locals {
           dimensions = {
             ClusterName = lower("${local.common_name}-${memorydb_name}")
           }
-          ok_actions    = try(values.alarms_overrides[alarm].ok_actions, value.ok_actions, [])
-          alarm_actions = try(values.alarms_overrides[alarm].alarm_actions, value.alarm_actions, [])
+          ok_actions    = try(values.alarms_overrides[alarm].ok_actions, var.memorydb_defaults.alarms_defaults.ok_actions, [])
+          alarm_actions = try(values.alarms_overrides[alarm].alarm_actions, var.memorydb_defaults.alarms_defaults.alarm_actions, [])
           alarms_tags   = merge(try(values.alarms_overrides[alarm].alarms_tags, value.alarms_tags), { "alarm-memorydb-name" = "${local.common_name}-${memorydb_name}" })
       }) if can(var.memorydb_parameters) && var.memorydb_parameters != {} && try(values.enable_alarms, false) && !contains(try(values.alarms_disabled, []), alarm)
     }
@@ -145,8 +145,8 @@ locals {
           dimensions = try(value.dimensions, {
             ClusterName = lower("${local.common_name}-${memorydb_name}")
           })
-          ok_actions    = try(value.ok_actions, [])
-          alarm_actions = try(value.alarm_actions, [])
+          ok_actions    = try(value.ok_actions, var.memorydb_defaults.alarms_defaults.ok_actions, [])
+          alarm_actions = try(value.alarm_actions, var.memorydb_defaults.alarms_defaults.alarm_actions, [])
           alarms_tags   = merge(try(values.alarms_overrides[alarm].alarms_tags, value.alarms_tags), { "alarm-memorydb-name" = "${local.common_name}-${memorydb_name}" })
         }
       ) if can(var.memorydb_parameters) && var.memorydb_parameters != {} && try(values.enable_alarms, false)
@@ -158,6 +158,30 @@ locals {
     local.alarms_custom_tmp
   )
 
+  # Shard-level alarms - creates a flat map for for_each
+  alarms_for_shard = merge(flatten([
+    for memorydb_name, memorydb_config in var.memorydb_parameters : [
+      # Iterate through each shard group (num_shards) and for each shard group iterate through its replicas (num_replicas_per_shard)
+      # This creates alarms for each individual node in the shard
+      for shards_group_idx in range(try(memorydb_config.num_shards, 1)) : [
+        for replica_idx in range(try(memorydb_config.num_replicas_per_shard, 0) + 1) : [
+          for alarm_name, alarm in local.alarms : {
+            "${memorydb_name}-${shards_group_idx}-${replica_idx}-${alarm_name}" = merge(
+              alarm,
+              {
+                alarm_name        = "${split("/", alarm.namespace)[1]}-${alarm.alarm_name}-${tolist(tolist(module.memorydb[memorydb_name].cluster_shards)[shards_group_idx].nodes)[replica_idx].name}"
+                alarm_description = "MemoryDB[${tolist(tolist(module.memorydb[memorydb_name].cluster_shards)[shards_group_idx].nodes)[replica_idx].name}] ${alarm.description}"
+                dimensions = {
+                  ClusterName = lower("${local.common_name}-${memorydb_name}")
+                  NodeName    = tolist(tolist(module.memorydb[memorydb_name].cluster_shards)[shards_group_idx].nodes)[replica_idx].name
+                }
+              }
+            )
+          } if startswith(alarm_name, "${memorydb_name}-")
+        ]
+      ]
+    ] if can(var.memorydb_parameters) && var.memorydb_parameters != {} && try(memorydb_config.enable_alarms, false)
+  ])...)
 
 }
 
@@ -182,7 +206,7 @@ data "aws_sns_topic" "alarms_sns_topic_name" {
 /*----------------------------------------------------------------------*/
 
 resource "aws_cloudwatch_metric_alarm" "alarms" {
-  for_each = nonsensitive(local.alarms)
+  for_each = nonsensitive(local.alarms_for_shard)
 
   alarm_name          = each.value.alarm_name
   alarm_description   = each.value.alarm_description
