@@ -1,7 +1,7 @@
 module "memorydb" {
   for_each = var.memorydb_parameters
   source   = "terraform-aws-modules/memory-db/aws"
-  version  = "2.3.0"
+  version  = "3.0.0"
 
   # Cluster
   name        = lower("${local.common_name}-${each.key}")
