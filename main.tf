@@ -1,7 +1,7 @@
 module "memorydb" {
   for_each = var.memorydb_parameters
   source   = "terraform-aws-modules/memory-db/aws"
-  version  = "3.0.0"
+  version  = "3.2.0"
 
   # Cluster
   name        = lower("${local.common_name}-${each.key}")
@@ -15,6 +15,9 @@ module "memorydb" {
   num_shards                 = try(each.value.num_shards, var.memorydb_defaults.num_shards, 1)
   num_replicas_per_shard     = try(each.value.num_replicas_per_shard, var.memorydb_defaults.num_replicas_per_shard, 0)
   data_tiering               = try(each.value.data_tiering, var.memorydb_defaults.data_tiering, false)
+  region                     = try(each.value.region, var.memorydb_defaults.region, null)
+  ip_discovery               = try(each.value.ip_discovery, var.memorydb_defaults.ip_discovery, null)
+  network_type               = try(each.value.network_type, var.memorydb_defaults.network_type, null)
 
   tls_enabled        = try(each.value.tls_enabled, var.memorydb_defaults.tls_enabled, true)
   security_group_ids = try(each.value.security_group_ids, var.memorydb_defaults.security_group_ids, [module.security_group[each.key].security_group_id])
