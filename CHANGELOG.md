@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.1](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/compare/v1.2.0...v1.2.1) (2026-03-03)
+
+
+### Bug Fixes
+
+* **deps:** bump terraform-aws-modules/memory-db/aws from 2.3.0 to 3.0.0 in the all-terraform-dependencies group across 1 directory ([#10](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/issues/10)) ([048d0e3](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/commit/048d0e36c06eaeea44a70d97a2a99e4fd93334a1))
+
 ## [1.2.0](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/compare/v1.1.0...v1.2.0) (2025-11-06)
 
 
