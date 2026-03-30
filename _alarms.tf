@@ -98,7 +98,7 @@ locals {
       merge(
         value,
         {
-          alarm_name          = "MemoryDB-${alarm}-${local.common_name}-${memorydb_name}"
+          alarm_name          = alarm
           alarm_description   = "MemoryDB[${memorydb_name}] ${value.description}"
           actions_enabled     = try(values.alarms_overrides[alarm].actions_enabled, true)
           threshold           = try(values.alarms_overrides[alarm].threshold, value.threshold)
@@ -125,7 +125,7 @@ locals {
       "${memorydb_name}-${alarm}" => merge(
         value,
         {
-          alarm_name          = "MemoryDB-${alarm}-${local.common_name}-${memorydb_name}"
+          alarm_name          = alarm
           alarm_description   = "MemoryDB[${memorydb_name}] ${value.description}"
           actions_enabled     = try(value.actions_enabled, true)
           threshold           = value.threshold
@@ -167,7 +167,7 @@ locals {
               alarm,
               {
                 alarm_name        = "${split("/", alarm.namespace)[1]}-${alarm.alarm_name}-${tolist(tolist(module.memorydb[memorydb_name].cluster_shards)[shards_group_idx].nodes)[replica_idx].name}"
-                alarm_description = "MemoryDB[${tolist(tolist(module.memorydb[memorydb_name].cluster_shards)[shards_group_idx].nodes)[replica_idx].name}] ${alarm.description}"
+                alarm_description = try(alarm.alarm_description, "MemoryDB[${tolist(tolist(module.memorydb[memorydb_name].cluster_shards)[shards_group_idx].nodes)[replica_idx].name}]")
                 dimensions = {
                   ClusterName = lower("${local.common_name}-${memorydb_name}")
                   NodeName    = tolist(tolist(module.memorydb[memorydb_name].cluster_shards)[shards_group_idx].nodes)[replica_idx].name
