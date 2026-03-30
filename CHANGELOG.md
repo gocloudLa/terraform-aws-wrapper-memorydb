@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/compare/v1.2.1...v1.2.2) (2026-03-30)
+
+
+### Bug Fixes
+
+* **alarms:** change name alarm creation ([#13](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/issues/13)) ([b4eb4c6](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/commit/b4eb4c60ff121a26f595f9461b55d35d6733e0d2))
+
 ## [1.2.1](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/compare/v1.2.0...v1.2.1) (2026-03-03)
 
 
