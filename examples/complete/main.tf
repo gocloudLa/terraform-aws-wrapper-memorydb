@@ -107,6 +107,7 @@ module "wrapper_memorydb" {
       #   "warning-CPUUtilization" = {
       #     "actions_enabled"     = true
       #     "evaluation_periods"  = 2
+      #     "description"         = "Custom description for CPUUtilization alarm"
       #     "datapoints_to_alarm" = 2
       #     "threshold"           = 30
       #     "period"              = 180
