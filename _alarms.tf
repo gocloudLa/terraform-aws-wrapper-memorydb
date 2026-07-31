@@ -99,7 +99,7 @@ locals {
         value,
         {
           alarm_name          = alarm
-          alarm_description   = "MemoryDB[${memorydb_name}] ${value.description}"
+          alarm_description   = try(values.alarms_overrides[alarm].description, "MemoryDB[${memorydb_name}] ${value.description}")
           actions_enabled     = try(values.alarms_overrides[alarm].actions_enabled, true)
           threshold           = try(values.alarms_overrides[alarm].threshold, value.threshold)
           unit                = try(values.alarms_overrides[alarm].unit, value.unit)
@@ -126,7 +126,7 @@ locals {
         value,
         {
           alarm_name          = alarm
-          alarm_description   = "MemoryDB[${memorydb_name}] ${value.description}"
+          alarm_description   = try(value.description, "MemoryDB[${memorydb_name}]")
           actions_enabled     = try(value.actions_enabled, true)
           threshold           = value.threshold
           unit                = value.unit
