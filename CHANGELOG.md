@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/compare/v1.2.2...v1.3.0) (2026-07-31)
+
+
+### Features
+
+* **alarms:** add custom description for alarms ([#17](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/issues/17)) ([b36f58b](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/commit/b36f58b0ec4440a0b79fb549b2306347878e6090))
+
 ## [1.2.2](https://github.com/gocloudLa/terraform-aws-wrapper-memorydb/compare/v1.2.1...v1.2.2) (2026-03-30)
 
 
